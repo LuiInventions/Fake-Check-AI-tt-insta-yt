@@ -1,0 +1,66 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: fakecheck-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - redis
+    networks:
+      - fakecheck-net
+
+  worker:
+    build:
+      context: ./backend
+    container_name: fakecheck-worker
+    command: celery -A celery_app worker --loglevel=info
+    volumes:
+      - ./data:/app/data
+      - ./.env:/app/.env
+      - ./cookies.txt:/app/cookies.txt:ro
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      - redis
+    networks:
+      - fakecheck-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: fakecheck-redis
+    # Port removed from host exposure for security - only accessible within Docker network
+    # ports:
+    #   - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fakecheck-net
+    command: redis-server --requirepass "${REDIS_PASSWORD:-changeme}" --maxmemory 256mb --maxmemory-policy allkeys-lru
+
+  polling-bot:
+    build:
+      context: ./backend
+    container_name: fakecheck-polling
+    command: python services/telegram_polling.py
+    volumes:
+      - ./.env:/app/.env
+    environment:
+      - BACKEND_INTERNAL_URL=http://backend:8000/api/telegram/webhook
+    depends_on:
+      - backend
+    networks:
+      - fakecheck-net
+
+networks:
+  fakecheck-net:
+
+volumes:
+  redis_data:

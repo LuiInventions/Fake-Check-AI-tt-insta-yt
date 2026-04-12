@@ -1,0 +1,18 @@
+from celery import Celery
+from config import get_settings
+
+settings = get_settings()
+celery_app = Celery(
+    "fakecheck_worker",
+    broker=settings.redis_url_with_auth,
+    backend=settings.redis_url_with_auth,
+    include=["tasks.process_video"]
+)
+
+celery_app.conf.update(
+    task_serializer="json",
+    accept_content=["json"],
+    result_serializer="json",
+    timezone="UTC",
+    enable_utc=True,
+)
