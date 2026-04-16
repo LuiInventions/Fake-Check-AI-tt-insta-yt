@@ -26,7 +26,7 @@ The bot combines state-of-the-art AI (**OpenAI GPT-4o & Whisper**) with live web
 - 
 - IMPORTANT: activate these two APIs for RapidAPI:
 -
-- Instagram Downloader API: https://rapidapi.com/irrors-apis/api/instagram-looter2
+- Instagram Video Downloader API: https://rapidapi.com/irrors-apis/api/instagram-looter2
 - News API: https://rapidapi.com/bonaipowered/api/news-api14
 - (bot has already acces to a browser, so the news API is optional)
 - 
