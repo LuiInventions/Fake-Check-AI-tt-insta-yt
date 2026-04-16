@@ -21,6 +21,10 @@ The bot combines state-of-the-art AI (**OpenAI GPT-4o & Whisper**) with live web
 - **[Docker Desktop](https://www.docker.com/)** (Must be running before starting setup)
 - **OpenAI API Key** ([Get it here](https://platform.openai.com/api-keys))
 - **RapidAPI Key** ([Get it here](https://rapidapi.com/))
+- IMPRTANT: activate these two APIs for RapidAPI:
+- Instagram Downloader API: https://rapidapi.com/irrors-apis/api/instagram-looter2
+- News API: https://rapidapi.com/bonaipowered/api/news-api14
+- (bot has already acces to a browser, so the news api is optional)
 - **Telegram Bot Token** ([@BotFather](https://t.me/botfather))
 
 ### 🛠️ Installation
